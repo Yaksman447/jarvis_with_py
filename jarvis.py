@@ -84,19 +84,66 @@ if __name__ == '__main__':
             recipient= myCommand()
             
             if 'Me' in recipient
-                    speak('what should i say')
+                    try:
+                    speak('what do you want me to say?')
                     content = myCommand()
             
                     server = smtplib.SMTP ('smtp.gmail.com', 587)
                     server.ehlo()
                     server.starttls()
+                    server.login("Your_Username", 'Your_Password')
+                    server.sendmail('Your_Username', "Recipient_Username", content)
+                    server.close()
+                    speak('Email sent!')
+
+                except:
+                    speak('Sorry ! I am unable to send your message at this moment!')
+
+
+        elif 'nothing' in query or 'abort' in query or 'stop' in query:
+            speak('okay')
+            speak('Bye Sir, have a good day.')
+            sys.exit()
+           
+        elif 'hello' in query:
+            speak('Greetings to you')
+
+        elif 'bye' in query:
+            speak('Bye to you too, have a good day.')
+            sys.exit()
+                                    
+        #elif 'play music' in query:
+           # music_folder = Your_music_folder_path
+            #music = [music1, music2, music3, music4, music5]
+            #random_music = music_folder + random.choice(music) + '.mp3'
+            #os.system(random_music)
+                  
+            #speak('Okay, here is your music! Enjoy!')
+            
+
+        else:
+            query = query
+            speak('Searching...')
+            try:
+                try:
+                    res = client.query(query)
+                    results = next(res.results).text
+                    speak('WOLFRAM-ALPHA says - ')
+                    speak('Got it.')
+                    speak(results)
                     
+                except:
+                    results = wikipedia.summary(query, sentences=2)
+                    speak('Got it.')
+                    speak('WIKIPEDIA says - ')
+                    speak(results)
+        
+            except:
+                webbrowser.open('www.google.com')
+        
+        speak('Next Command! Sir!')
                     
             
             
       
-                  
         
-        
-
-
